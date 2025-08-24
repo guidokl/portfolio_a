@@ -1,4 +1,4 @@
-# Portfolio Übungsaufgabe für IT-Modul Webentwicklung
+## Portfolio Übungsaufgabe für IT-Modul Webentwicklung
 _Autor: Guido Kleine, FiAe20, BFW Dortmund_
 
 Dies ist mein Portfolio Webprojekt. 
