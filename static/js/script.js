@@ -28,8 +28,13 @@
 // - Applies the theme by setting data-theme="light|dark" on <html>.
 // - Chooses a default based on system preference if nothing is saved.
 // - Updates both theme buttons’ labels and wires click listeners to toggle.
+//
+// const theme = (() => { ... })();
+// Immediately Invoked Function Expression (IIFE) pattern, returning an object
+// (() => { ... }) → an anonymous arrow function
+// The (); at the end → calls that function immediately
 const theme = (() => {
-  // Storage key used to persist the theme between visits
+  // Storage key used to persist the theme between visits, stored in local storage
   const key = "pref-theme";
 
   // Apply a given theme value ("light" or "dark") to the document and UI
@@ -38,6 +43,7 @@ const theme = (() => {
     document.documentElement.setAttribute("data-theme", t);
 
     // Compute the button label that hints the other mode
+    // === same value, same type
     const label = t === "dark" ? "☀️ Light" : "🌙 Dark";
 
     // Update both theme buttons’ text content if they exist in the DOM
@@ -85,6 +91,9 @@ const theme = (() => {
 // Overview:
 // - Picks a greeting based on the current hour and injects it.
 // - Updates the current year in the footer to keep it fresh.
+//
+// const initGreeting = () => { ... };
+// This is a plain arrow function assigned to a variable.
 const initGreeting = () => {
   const h = new Date().getHours(); // current hour (0–23)
   // Choose a greeting string by comparing the hour against ranges
@@ -102,16 +111,33 @@ const initGreeting = () => {
 // - Toggles a CSS class on the nav to open/close it on small screens.
 // - Closes the menu when any nav link is clicked.
 const initNav = () => {
-  const btn = document.getElementById("navToggle"); // hamburger button
-  const nav = document.getElementById("siteNav");   // nav element
-  if (!btn || !nav) return; // bail out if either is missing
+  // Grab references to the hamburger button and the <nav> element
+  const btn = document.getElementById("navToggle"); // hamburger button (≡)
+  const nav = document.getElementById("siteNav");   // <nav> container for links
 
-  // On click, toggle the "open" class
-  btn.addEventListener("click", () => { nav.classList.toggle("open"); });
+  // If either element is missing, stop early to avoid errors
+  if (!btn || !nav) return;
 
-  // When a nav link is clicked, close the menu
+  // addEventListener:
+  //   - Lets us listen for an event (like "click", "input", "submit") on an element.
+  //   - When that event happens, a function (callback) runs.
+  // Here: when the hamburger button is clicked, toggle the menu open/closed.
+  btn.addEventListener("click", () => { 
+    // classList:
+    //   - A special property of elements that represents their CSS classes.
+    //   - It has methods like add(), remove(), toggle().
+    //   - toggle("open") will add the class if it’s missing, or remove it if it’s already there.
+    nav.classList.toggle("open"); 
+  });
+
+  // querySelectorAll("a.nav-link"):
+  //   - Finds *all* <a> elements inside nav that have the class "nav-link".
+  //   - Returns a NodeList (array-like collection of elements).
+  //   - We can loop over it with forEach().
   nav.querySelectorAll("a.nav-link").forEach((a) =>
+    // For each link, add a click listener:
     a.addEventListener("click", () => {
+      // When a link is clicked, remove the "open" class so the menu closes.
       nav.classList.remove("open");
     })
   );
@@ -141,15 +167,23 @@ const resume = (() => {
   ];
 
   // DOM element handles (will be populated in init())
+  // els = elements
   const els = { list: null, chkWork: null, chkEdu: null, yearFrom: null, yearTo: null, reset: null };
 
   // Compute min and max year across all entries to initialize inputs
   const bounds = (() => {
+    // Array.prototype.flatMap()
+    // Combo of .map() + .flat() (flatten)
+    // .map() → transforms each element into something new
+    // .flat() → flattens nested arrays into a single array
+    // .flatMap() = does both in one step
     const years = data.flatMap((i) => [i.start, i.end]); // collect all years
     return { min: Math.min(...years), max: Math.max(...years) }; // extremes
   })();
 
   // Read current filter settings from the UI and return as an object
+  // ?. = optional chaining (safe access, returns undefined if missing)
+  // ?? = nullish coalescing (use fallback only if value is null/undefined)
   const filters = () => ({
     showWork: els.chkWork?.checked ?? true, // include work items?
     showEdu: els.chkEdu?.checked ?? true,  // include education items?
@@ -160,7 +194,6 @@ const resume = (() => {
   // Render filtered, sorted items as cards
   const render = () => {
     if (!els.list) return; // safety check: container exists
-
     const { showWork, showEdu, from, to } = filters(); // current filter state
 
     // Filter by type and by year overlap; sort by end desc, then start desc
@@ -172,6 +205,9 @@ const resume = (() => {
     if (!items.length) { els.list.textContent = "No entries match your filter."; return; }
 
     // Otherwise, build the card markup efficiently with map + join
+    // Use a template literal with ${} to insert JS values into the string.
+    // The ? : ternary picks "work"/"edu" for the class, and "Professional"/"Education" as text.
+    // The > just ends the <span> opening tag in normal HTML.
     els.list.innerHTML = items
       .map((i) => `
         <article class="card">
@@ -226,15 +262,15 @@ const contactForm = (() => {
   // Extract the recipient email address from a form action like "mailto:you@x?…"
   const pickRecipient = (action) => {
     if (typeof action !== "string") return "";           // non-string guard
-    if (!action.startsWith("mailto:")) return "";         // only accept mailto
-    const mail = action.split("?")[0].slice(7);            // strip protocol + query
-    return mail || "";                                     // return address or empty
+    if (!action.startsWith("mailto:")) return "";        // only accept mailto
+    const mail = action.split("?")[0].slice(7);          // strip protocol + query
+    return mail || "";                                   // return address or empty
   };
 
   // Initialize validation and event handling
   const init = () => {
     const form = document.getElementById("contactForm"); // the <form>
-    if (!form) return;                                    // stop if not present
+    if (!form) return;                                   // stop if not present
 
     // Input elements (f = fields)
     const f = {
