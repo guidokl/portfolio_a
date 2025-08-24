@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="keywords" content="portfoloio software development fachinformatiker anwendungsentwicklung" />
+  <meta name="description" content="Developer portfolio of Guido X." />
+  <title>Guido X. - Developer Portfolio</title>
+  <!-- Link to main stylesheet -->
+  <link rel="stylesheet" href="static/css/style.css" />
+  <link rel="icon" href="static/img/logo.png" type="image/png" />
+</head>
+
+<body>
+  <!-- Header with logo, site title, nav, and theme toggle -->
+  <header class="site-header">
+    <div class="brand">
+      <img src="static/img/logo.png" alt="Logo" class="logo" />
+      <span>My Portfolio</span>
+    </div>
+
+    <!-- Mobile menu button (hamburger) -->
+    <button id="navToggle" class="icon-button">☰</button>
+
+    <!-- Primary navigation -->
+  <nav id="siteNav" class="site-nav">
+      <ul>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#resume" class="nav-link">Resume</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="imprint.html" class="nav-link">Imprint & Privacy</a></li>
+      </ul>
+    </nav>
+
+    <!-- Theme toggle button -->
+  <button id="themeToggle" class="button">
+      🌙 Dark
+    </button>
+  </header>
+
+  <!-- Main content starts -->
+  <main id="main">
+    <!-- Home / Hero -->
+    <section id="home" class="section hero">
+      <div class="container">
+        <div class="hero-content">
+          <div>
+            <h1 class="jet">Hi, <span id="timeGreeting">Welcome</span>!</h1>
+            <p class="lead">I'm Guido, nice to have you here. On this site, you can explore my background and ways to get in touch.</p>
+          </div>
+          <div class="hero-photo">
+            <img src="static/img/profile.jpg" alt="Profile photo" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="jet">About Me</h2>
+        <p>
+          I am a developer in training with a strong focus on clean,
+          maintainable code, performance optimization, and building intuitive
+          user experiences. My journey into software development combines
+          curiosity, persistence, and a passion for solving real-world
+          problems with technology.
+        </p>
+        <p>
+          Currently, I am pursuing a professional retraining as a
+          Fachinformatiker für Anwendungsentwicklung in Dortmund, where I am
+          sharpening my skills in modern software development, data
+          structures, and practical application design. Alongside this, I
+          actively contribute to open-source projects and share my personal
+          coding experiments on
+          <a href="https://github.com/guidokl" target="_blank" rel="noopener">GitHub</a>.
+        </p>
+        <p>
+          Beyond the technical side, I enjoy combining creativity and logic -
+          whether it’s exploring the intersection of music and code, or
+          experimenting with workflow automation. My long-term goal is to
+          create software that not only works efficiently under the hood but
+          also feels natural, clear, and rewarding to use.
+        </p>
+      </div>
+    </section>
+
+    <!-- Resume with dynamic filter -->
+    <section id="resume" class="section">
+      <div class="container">
+        <h2 class="jet">Resume</h2>
+
+        <!-- Filter controls -->
+        <form id="resumeFilters" class="filters" novalidate>
+          <!-- Type filter -->
+          <fieldset>
+            <legend>Type</legend>
+            <label>
+              <input type="checkbox" id="filterWork" checked />
+              Professional
+            </label>
+            <label>
+              <input type="checkbox" id="filterEducation" checked />
+              Education
+            </label>
+          </fieldset>
+
+          <!-- Year range filter (simple numeric inputs for clarity) -->
+          <fieldset>
+            <legend>Year range</legend>
+            <label>
+              From
+              <input type="number" id="yearFrom" min="1990" max="2100" step="1" />
+            </label>
+            <label>
+              To
+              <input type="number" id="yearTo" min="1990" max="2100" step="1" />
+            </label>
+          </fieldset>
+
+          <!-- Button to reset filters -->
+          <button type="button" id="resetFilters" class="button">
+            Reset
+          </button>
+        </form>
+
+        <!-- Container where resume entries will be dynamically rendered -->
+  <div id="resumeList" class="cards"></div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="jet">Contact</h2>
+        <p>
+          Send me a message using this form. Submission uses your email client
+          (mailto), no data is stored on this site.
+        </p>
+
+        <!-- Contact form (mailto, works without JS; JS only enhances validation) -->
+        <form id="contactForm" class="contact-form" action="mailto:superguido@example.com" method="post"
+          enctype="text/plain" novalidate>
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" name="Name" type="text" required placeholder="Your name" />
+            <small class="error" id="nameError"></small>
+          </div>
+
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="Email" type="email" required placeholder="you@example.com" />
+            <small class="error" id="emailError"></small>
+          </div>
+
+          <div class="form-row">
+            <label for="subject">Subject</label>
+            <input id="subject" name="Subject" type="text" required placeholder="Subject" />
+            <small class="error" id="subjectError"></small>
+          </div>
+
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="Message" rows="6" required placeholder="Write your message here"></textarea>
+            <small class="error" id="messageError"></small>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <input id="privacy" type="checkbox" required />
+              I have read the
+              <a href="imprint.html#privacy">privacy policy</a> and agree to
+              the processing of my data for the purpose of responding to my
+              inquiry.
+            </label>
+            <small class="error" id="privacyError"></small>
+          </div>
+
+          <div class="form-actions">
+            <button class="button primary" type="submit">
+              Send via Email
+            </button>
+            <button class="button" type="reset">Clear</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer present on every "page" (section) -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <img src="static/img/logo.png" alt="Logo" class="logo" />
+        <span>© <span id="yearNow"></span> My Portfolio</span>
+      </div>
+  <nav>
+        <a href="imprint.html">Imprint & Privacy</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div>
+  <button id="footerThemeToggle" class="button">
+          🌙 Dark
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Main script -->
+  <script src="static/js/script.js" defer></script>
+</body>
+
+</html>
